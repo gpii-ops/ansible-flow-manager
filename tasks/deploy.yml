@@ -8,7 +8,7 @@
     - name: Copy Flow Manager configuration files to temporary location in a Vagrant environment
       command: cp '{{ nodejs_app_install_dir }}/{{ item.path }}/{{ item.file }}' '/tmp/{{ item.file }}'
       with_items:
-        - { path: 'gpii/configs', file: 'gpii.config.cloudBased.flowManager.production.json' }
+        - { path: 'gpii/configs', file: 'gpii.config.cloudBased.production.json' }
 
     - name: Replace the production Preferences Server's address with a user provided one in a Vagrant environment
       replace:
@@ -17,12 +17,12 @@
         replace: 'http://{{ flow_manager_preferences_server_host_address }}'
       notify: Restart the application systemd unit
       with_items:
-        - gpii.config.cloudBased.flowManager.production.json
+        - gpii.config.cloudBased.production.json
 
     - name: Move Flow Manager configuration files back to original location in a Vagrant environment
       command: mv '/tmp/{{ item.file }}' '{{ nodejs_app_install_dir }}/{{ item.path }}/{{ item.file }}'
       with_items:
-        - { path: 'gpii/configs', file: 'gpii.config.cloudBased.flowManager.production.json' }
+        - { path: 'gpii/configs', file: 'gpii.config.cloudBased.production.json' }
 
   when: is_vagrant
 
@@ -34,5 +34,5 @@
     replace: 'http://{{ flow_manager_preferences_server_host_address }}'
   notify: Restart the application systemd unit
   with_items:
-    - { path: 'gpii/configs', file: 'gpii.config.cloudBased.flowManager.production.json' }
+    - { path: 'gpii/configs', file: 'gpii.config.cloudBased.production.json' }
   when: not is_vagrant
